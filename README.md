@@ -16,11 +16,7 @@ feedback are useful, but they do not naturally describe a variable number of
 defect instances or bind each region to a semantic explanation.
 
 **Structured Defect Grounding (SDG)** addresses this by turning T2I diagnosis
-into structured set prediction. Each defect is represented as a tuple:
-
-```text
-(where, what, why, importance)
-```
+into structured set prediction. Each defect is represented as a tuple:`(where, what, why, importance)` 
 
 This gives the model instance-level feedback that is both interpretable and
 actionable: it localizes the problematic region, names the defect type, explains

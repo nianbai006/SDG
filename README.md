@@ -52,7 +52,7 @@ why it is defective, and estimates its severity.
 | Pipeline | What it trains | Framework | GPUs (paper) |
 |----------|----------------|-----------|--------------|
 | **Detector SFT** | Qwen3-VL-4B → structured `<think>/<answer>` defect boxes | [ms-swift](https://github.com/modelscope/ms-swift) `swift sft` | 2×8 |
-| **Detector GRPO** | RL-tune the detector with the `SDG_combined_v3` reward | ms-swift `swift rlhf` (+ colocated vLLM) | 2×8 |
+| **Detector GRPO** | RL-tune the detector with the `SDG_combined` reward | ms-swift `swift rlhf` (+ colocated vLLM) | 2×8 |
 | **BoxFlow-GRPO** | RL-align FLUX.1-dev using detector-derived spatial rewards | Flow-Factory fork + SGLang reward servers | 2×8 |
 
 <p align="center">
@@ -73,6 +73,10 @@ table reports selected defect-level metrics from the SDG-30K test set.
 | **SDG (SFT)** | 0.255 | **0.904** | 0.883 | 0.376 | **0.893** | 0.892 |
 | **SDG (GRPO)** | **0.263** | **0.904** | **0.887** | **0.387** | 0.888 | **0.893** |
 
+<p align="center">
+  <img src="assets/fig_sdg.png" width="95%" alt="SDG detector examples on artifact, misalignment, and clean images">
+</p>
+
 ### BoxFlow-GRPO for T2I Alignment
 
 BoxFlow-GRPO is the only compared RL variant that improves all five reported
@@ -88,7 +92,7 @@ downstream dimensions over the FLUX.1-dev base model.
 
 > **Status — reproduced from scratch.** All three pipelines were validated
 > end-to-end with fresh conda envs on 8× H20 (driver 575 / CUDA 12.9): detector
-> SFT (loss ↓, full checkpoint saved), detector GRPO (custom `SDG_combined_v3`
+> SFT (loss ↓, full checkpoint saved), detector GRPO (custom `SDG_combined`
 > reward computed via colocated vLLM, checkpoint saved), and FLUX BoxFlow-GRPO
 > (FLUX sampling → SGLang detector + UnifiedReward servers → dense spatial
 > advantage → GRPO update, checkpoint saved). Verified stack: ms-swift 4.3.0 /

@@ -1,0 +1,15 @@
+# SGLang reward-serving env — used by `start_servers_A.sh` to host the SDG
+# bbox detector and the UnifiedReward-2.0 scalar scorer over HTTP.
+# Heavy CUDA stack; isolated from training so vllm/sglang versions don't drift.
+
+sglang[all]==0.3.6
+vllm==0.6.4
+
+# Qwen3-VL inference deps
+transformers==4.46.3
+qwen-vl-utils==0.0.10
+
+# core
+torch==2.4.0
+Pillow==10.4.0
+numpy==1.26.4

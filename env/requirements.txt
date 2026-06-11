@@ -1,0 +1,36 @@
+# Core SDG environment: detector training, inference, evaluation.
+
+torch==2.4.0
+torchvision==0.19.0
+transformers==4.46.3
+accelerate==0.34.2
+peft==0.13.2
+trl==0.11.4
+deepspeed==0.15.4
+
+# Inference acceleration
+sglang==0.3.6
+vllm==0.6.4
+
+# Embedding model for DescCos metric
+sentence-transformers==3.2.1
+
+# Image / numerics
+Pillow==10.4.0
+numpy==1.26.4
+scipy==1.14.1
+opencv-python-headless==4.10.0.84
+
+# Hungarian matching, evaluation
+scikit-learn==1.5.2
+
+# Data + utilities
+pandas==2.2.3
+jsonlines==4.0.0
+tqdm==4.66.5
+huggingface_hub==0.26.2
+datasets==3.0.2
+
+# Optional API clients (only needed when running zero-shot baselines).
+# google-genai>=0.4.0
+# openai>=1.50.0

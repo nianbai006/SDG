@@ -1,0 +1,19 @@
+# Legacy "flow_grpo" env — used only by `eval_metrics_split.sh` to compute the
+# three reference T2I scores (ImageReward + CLIPScore + LAION aesthetic).
+# Kept separate because ImageReward pins old transformers / CLIP and clashes
+# with the BoxFlow-GRPO training env.
+
+torch==2.1.2
+torchvision==0.16.2
+transformers==4.40.2
+diffusers==0.27.2
+ftfy==6.2.0
+
+# scoring models
+image-reward==1.5
+git+https://github.com/openai/CLIP.git@dcba3cb2e2827b402d2701e7e1c7d9fed8a20ef1#egg=clip
+
+# numerics + utils
+Pillow==10.4.0
+numpy==1.26.4
+tqdm==4.66.5

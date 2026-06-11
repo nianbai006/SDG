@@ -1,0 +1,85 @@
+# Dense GRPO Exp1: FLUX.1-dev (library defaults + dense)
+# All base params aligned with flux1.yaml defaults
+# Only additions: dense-grpo trainer + CombinedUR2BBox reward + dense params
+#
+# Deployment: A = reward servers (bbox 4 GPU + UR2 4 GPU), B = training (8 GPU)
+
+launcher: "accelerate"
+num_processes: 8
+mixed_precision: "bf16"
+
+log:
+  run_name: null
+  project: "DenseGRPO"
+  logging_backend: "wandb"
+  save_dir: "saves/dense_grpo"
+  save_freq: 50
+  save_model_only: true
+
+data:
+  dataset_dir: "dataset/pickscore"
+  sampler_type: "group_contiguous"
+
+model:
+  model_type: "flux1"
+  model_name_or_path: "black-forest-labs/FLUX.1-dev"
+  finetune_type: 'lora'
+  lora_rank: 64
+  lora_alpha: 128
+  target_modules: "default"
+
+train:
+  trainer_type: 'dense-grpo'
+  advantage_aggregation: 'gdpo'
+  global_std: false
+  clip_range: 1.0e-4
+  adv_clip_range: 5.0
+  kl_type: 'v-based'
+  kl_beta: 0
+  ref_param_device: 'cuda'
+
+  resolution: 512
+  num_inference_steps: 10
+  guidance_scale: 3.5
+  per_device_batch_size: 2
+  group_size: 16
+  unique_sample_num_per_epoch: 48
+  gradient_step_per_epoch: 2
+  max_epochs: 400
+
+  learning_rate: 3.0e-4
+  max_grad_norm: 1.0
+  adam_weight_decay: 1.0e-4
+
+  ema_decay: 0.9
+  ema_update_interval: 4
+
+  seed: 42
+
+  # DenseGRPO-specific
+  spatial_grpo_alpha: 0.5
+  spatial_grpo_alpha_artifact: 0.5
+  spatial_grpo_alpha_misalignment: 0.05
+  dense_sigma_min: 1.0e-6
+  dense_min_penalty: 0.0
+  bbox_importance_weighting: true
+  bbox_prompt_template: "thinkpe_imp"
+
+scheduler:
+  dynamics_type: "Flow-SDE"
+  noise_level: 0.7
+  num_sde_steps: 1
+  sde_steps: [1, 2, 3]
+
+rewards:
+  - name: "combined_ur2_bbox"
+    reward_model: "flow_factory.rewards.dense_grpo_rewards.CombinedUR2BBoxReward"
+    weight: 1.0
+    batch_size: 8
+    ur2_server_url: "http://localhost:17141/v1"
+    bbox_server_url: "http://localhost:17142/v1"
+
+eval:
+  resolution: 512
+  num_inference_steps: 20
+  eval_freq: 50

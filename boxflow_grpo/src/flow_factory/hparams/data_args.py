@@ -1,0 +1,94 @@
+# Copyright 2026 Jayce-Ping
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy    of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# src/flow_factory/hparams/data_args.py
+import yaml
+from dataclasses import asdict, dataclass, field
+from typing import Any, Literal, Optional, Tuple, Union, List, Iterable
+from .abc import ArgABC
+
+
+@dataclass
+class DataArguments(ArgABC):
+    r"""Arguments pertaining to data input for training and evaluation."""
+    dataset_dir: str = field(
+        default="data",
+        metadata={"help": "Path to the folder containing the datasets."},
+    )
+    image_dir: Optional[str] = field(
+        default=None,
+        metadata={"help": "Path to the folder containing conditioning images. Defaults to 'images' subfolder in dataset_dir."},
+    )
+    video_dir: Optional[str] = field(
+        default=None,
+        metadata={"help": "Path to the folder containing conditioning videos. Defaults to 'videos' subfolder in dataset_dir."},
+    )
+    preprocessing_batch_size: int = field(
+        default=8,
+        metadata={"help": "The batch size for preprocessing the datasets."},
+    )
+    dataloader_num_workers: int = field(
+        default=16,
+        metadata={"help": "The number    of workers for DataLoader."},
+    )
+    enable_preprocess: bool = field(
+        default=True,
+        metadata={"help": "Whether to enable preprocessing    of the dataset."},
+    )
+    force_reprocess: bool = field(
+        default=True,
+        metadata={"help": "Whether to force reprocessing    of the dataset even if cached data exists."},
+    )
+    max_dataset_size: Optional[int] = field(
+        default=None,
+        metadata={"help": "If set, limits the maximum number    of samples in the dataset."},
+    )
+    preprocess_parallelism: Literal["global", "local"] = field(
+        default="local",
+        metadata={
+            "help": (
+                "Controls how distributed preprocessing is parallelized. "
+                "'global': all processes across all nodes split and merge the dataset (requires a shared filesystem). "
+                "'local': each node independently splits the dataset among its local processes and merges locally "
+                "(no shared filesystem required across nodes)."
+            )
+        },
+    )
+    sampler_type: Literal["auto", "distributed_k_repeat", "group_contiguous"] = field(
+        default="auto",
+        metadata={
+            "help": (
+                "Sampler strategy for K-repeat distributed sampling. "
+                "'auto': automatically select based on reward config "
+                "(uses group_contiguous when async_reward is enabled, otherwise distributed_k_repeat). "
+                "'distributed_k_repeat': shuffle K copies globally across ranks (fewer constraints). "
+                "'group_contiguous': keep all K copies    of each group on the same rank "
+                "(requires unique_sample_num divisible by world_size)."
+            )
+        },
+    )
+
+    def __post_init__(self):
+        self.dataset = self.dataset_dir
+
+    def to_dict(self) -> dict[str, Any]:
+        return super().to_dict()
+
+    def __str__(self) -> str:
+        """Pretty print configuration as YAML."""
+        return yaml.dump(self.to_dict(), default_flow_style=False, sort_keys=False, indent=2)
+    
+    def __repr__(self) -> str:
+        """Same as __str__ for consistency."""
+        return self.__str__()

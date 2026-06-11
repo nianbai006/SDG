@@ -26,6 +26,10 @@ This gives the model instance-level feedback that is both interpretable and
 actionable: it localizes the problematic region, names the defect type, explains
 why it is defective, and estimates its severity.
 
+<p align="center">
+  <img src="assets/fig_hmVSbox.png" width="95%" alt="Heatmap feedback versus SDG structured feedback">
+</p>
+
 ## Key Features
 
 - **Structured Defect Grounding.** SDG predicts localized defect sets in a
@@ -50,6 +54,10 @@ why it is defective, and estimates its severity.
 | **Detector SFT** | Qwen3-VL-4B → structured `<think>/<answer>` defect boxes | [ms-swift](https://github.com/modelscope/ms-swift) `swift sft` | 2×8 |
 | **Detector GRPO** | RL-tune the detector with the `SDG_combined_v3` reward | ms-swift `swift rlhf` (+ colocated vLLM) | 2×8 |
 | **BoxFlow-GRPO** | RL-align FLUX.1-dev using detector-derived spatial rewards | Flow-Factory fork + SGLang reward servers | 2×8 |
+
+<p align="center">
+  <img src="assets/fig_pipeline.png" width="95%" alt="SDG-30K construction, detector training, and downstream applications">
+</p>
 
 ## Key Results
 

@@ -5,7 +5,7 @@ Defect Grounding for Text-to-Image Feedback**.
 
 [![arXiv](https://img.shields.io/badge/arXiv-2606.06113-b31b1b.svg)](https://arxiv.org/abs/2606.06113)
 [![Dataset](https://img.shields.io/badge/Dataset-SDG--30K-blue)](https://huggingface.co/datasets/P1n3/SDG-30K)
-[![Models](https://img.shields.io/badge/Models-HuggingFace-yellow)](https://huggingface.co/P1n3)
+[![Models](https://img.shields.io/badge/Models-HuggingFace-yellow)](https://huggingface.co/collections/P1n3/sdg)
 [![License](https://img.shields.io/badge/Code-Apache--2.0-green)](LICENSE)
 
 ## Overview
@@ -284,3 +284,16 @@ trainer description and hyper-parameters.
 Repository code: Apache-2.0 (the `boxflow_grpo/` subtree keeps its upstream
 Flow-Factory Apache-2.0 license). Dataset, generated images and model weights
 are governed by their own licenses — see [`ASSET_LICENSES.md`](ASSET_LICENSES.md).
+
+## Citation
+
+If you use SDG, the SDG-30K dataset, or the released checkpoints, please cite:
+
+```bibtex
+@article{zhang2026and,
+  title={Where, What, Why, and Importance: Structured Defect Grounding for Text-to-Image Feedback},
+  author={Zhang, Huaisong and Yu, Hao and Zhang, Yuxuan and Wang, Jiahe and Chen, Xinrui and Cao, Haoxiang and Lu, Feng and Zhang, Wendong and Yu, Changqian and Yuan, Chun},
+  journal={arXiv preprint arXiv:2606.06113},
+  year={2026}
+}
+```
